@@ -6,32 +6,166 @@ package File::TypeCategories;
 # $Revision$, $HeadURL$, $Date$
 # $Revision$, $Source$, $Date$
 
+use Moo;
 use strict;
 use warnings;
-use version;
-use Carp;
-use Scalar::Util;
-use List::Util;
-#use List::MoreUtils;
 use Data::Dumper qw/Dumper/;
 use English qw/ -no_match_vars /;
-use base qw/Exporter/;
+use Type::Tiny;
+use Types::Standard -types;
 
+our $VERSION = 0.01;
+our %warned_once;
 
-our $VERSION     = version->new('HASH(0x1ec5eb0)');
-our @EXPORT_OK   = qw//;
-our %EXPORT_TAGS = ();
-#our @EXPORT      = qw//;
+has ignore => (
+    is  => 'rw',
+    isa => ArrayRef[Str],
+    default => sub{[qw{ ignore }]},
+);
+has include => (
+    is  => 'rw',
+    isa => ArrayRef[Str],
+);
+has exclude => (
+    is  => 'rw',
+    isa => ArrayRef[Str],
+);
+has include_type => (
+    is  => 'rw',
+    isa => ArrayRef[Str],
+    default => sub{[]},
+);
+has exclude_type => (
+    is  => 'rw',
+    isa => ArrayRef[Str],
+    default => sub{[]},
+);
+has symlinks => (
+    is  => 'rw',
+    isa => Bool,
+    default => 0,
+);
+has links => (
+    is  => 'rw',
+    isa => HashRef,
+    default => sub {{}},
+);
 
-sub new {
-	my $caller = shift;
-	my $class  = ref $caller ? ref $caller : $caller;
-	my %param  = @_;
-	my $self   = \%param;
+has type_suffixes => (
+    is      => 'rw',
+    isa     => HashRef,
+);
 
-	bless $self, $class;
+sub BUILD {
+    my ($self) = @_;
 
-	return $self;
+    $ENV{HOME} ||= $ENV{USERPROFILE};
+    my $conf_file = "$ENV{HOME}/.csrc";
+
+    return if !-r $conf_file;
+
+    my $conf = Config::General->new($conf_file);
+    my %conf = $conf->getall();
+    $conf{file_types} ||= {};
+
+    for my $file_type ( keys %{ $conf{file_types} } ) {
+        $self->type_suffixes->{$file_type} ||= {};
+        for my $setting ( keys %{ $conf{file_types}{$file_type} } ) {
+            if ( $setting =~ s/^[+]//xms ) {
+                push @{ $self->type_suffixes->{$file_type}{$setting} }
+                     , ref $conf{file_types}{$file_type}{$setting} eq 'ARRAY'
+                     ? @{ $conf{file_types}{$file_type}{$setting} }
+                     : $conf{file_types}{$file_type}{$setting};
+            }
+            else {
+                $self->type_suffixes->{$file_type}{$setting}
+                     = ref $conf{file_types}{$file_type}{$setting} eq 'ARRAY'
+                     ? $conf{file_types}{$file_type}{$setting}
+                     : [ $conf{file_types}{$file_type}{$setting} ];
+            }
+        }
+    }
+}
+
+sub file_ok {
+    my ($self, $file) = @_;
+
+    for my $ignore (@{ $self->ignore }) {
+        return 0 if $self->types_match($file, $ignore);
+    }
+
+    return 1 if -d $file;
+
+    my $possible = 0;
+    my $matched = 0;
+    if ( @{ $self->include_type }) {
+        for my $type (@{ $self->include_type }) {
+            my $match = $self->types_match($file, $type);
+            $possible-- if $match == 2;
+            $matched += $match;
+        }
+        return 0 if $matched <= 0;
+    }
+
+    if (!$matched) {
+        for my $type (@{ $self->exclude_type }) {
+            my $match = $self->types_match($file, $type);
+            return 0 if $match && $match != 2;
+            $possible++ if $match == 2;
+        }
+        return 0 if $possible > 0;
+    }
+
+    if ($self->include) {
+        my $matches = 0;
+        for my $include (@{ $self->include }) {
+            $matches ||= $file =~ /$include/;
+            last if $matches;
+        }
+        return 0 if !$matches;
+    }
+
+    if ($self->exclude) {
+        for my $exclude (@{ $self->exclude }) {
+            return 0 if $file =~ /$exclude/;
+        }
+    }
+
+    return 1;
+}
+
+sub types_match {
+    my ($self, $file, $type) = @_;
+
+    my $types = $self->type_suffixes;
+
+    warn "No type $type" if !exists $types->{$type} && !$warned_once{$type}++;
+    return 0 if !exists $types->{$type};
+
+    for my $suffix ( @{ $types->{$type}{definite} } ) {
+        return 3 if $file =~ /$suffix/;
+    }
+
+    for my $suffix ( @{ $types->{$type}{possible} } ) {
+        return 2 if $file =~ /$suffix/;
+    }
+
+    if ( $types->{$type}{bang} ) {
+        if ( open my $fh, '<', $file ) {
+            my $line = <$fh>;
+            close $fh;
+            return 3 if $line && $line =~ /$types->{$type}{bang}/;
+        }
+    }
+
+    return 1 if $types->{$type}{none} && $file !~ m{ [^/] [.] [^/]+ $}xms;
+
+    for my $other ( @{ $types->{$type}{other_types} } ) {
+        my $match = $self->types_match($file, $other);
+        return $match if $match;
+    }
+
+    return 0;
 }
 
 
