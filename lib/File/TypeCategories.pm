@@ -13,13 +13,14 @@ use Data::Dumper qw/Dumper/;
 use English qw/ -no_match_vars /;
 use Type::Tiny;
 use Types::Standard -types;
+use Config::General;
 
 our $VERSION = 0.01;
 our %warned_once;
 
 has ignore => (
-    is  => 'rw',
-    isa => ArrayRef[Str],
+    is      => 'rw',
+    isa     => ArrayRef[Str],
     default => sub{[qw{ ignore }]},
 );
 has include => (
@@ -31,29 +32,30 @@ has exclude => (
     isa => ArrayRef[Str],
 );
 has include_type => (
-    is  => 'rw',
-    isa => ArrayRef[Str],
+    is      => 'rw',
+    isa     => ArrayRef[Str],
     default => sub{[]},
 );
 has exclude_type => (
-    is  => 'rw',
-    isa => ArrayRef[Str],
+    is      => 'rw',
+    isa     => ArrayRef[Str],
     default => sub{[]},
 );
 has symlinks => (
-    is  => 'rw',
-    isa => Bool,
+    is      => 'rw',
+    isa     => Bool,
     default => 0,
 );
 has links => (
-    is  => 'rw',
-    isa => HashRef,
+    is      => 'rw',
+    isa     => HashRef,
     default => sub {{}},
 );
 
 has type_suffixes => (
     is      => 'rw',
     isa     => HashRef,
+    default => sub {{}},
 );
 
 sub BUILD {
@@ -180,8 +182,7 @@ File::TypeCategories - <One-line description of module's purpose>
 
 =head1 VERSION
 
-This documentation refers to File::TypeCategories version HASH(0x1ec5eb0)
-
+This documentation refers to File::TypeCategories version 0.01
 
 =head1 SYNOPSIS
 

@@ -8,10 +8,6 @@
 
 use strict;
 use warnings;
-use version;
-use Scalar::Util;
-use List::Util;
-#use List::MoreUtils;
 use Getopt::Long;
 use Pod::Usage;
 use Data::Dumper qw/Dumper/;
@@ -19,19 +15,19 @@ use English qw/ -no_match_vars /;
 use FindBin qw/$Bin/;
 use Path::Class;
 
-our $VERSION = version->new('0.0.1');
+our $VERSION = 0.01;
 my ($name)   = $PROGRAM_NAME =~ m{^.*/(.*?)$}mxs;
 
 my %option = (
-	out     => undef,
-	verbose => 0,
-	man     => 0,
-	help    => 0,
-	VERSION => 0,
+    out     => undef,
+    verbose => 0,
+    man     => 0,
+    help    => 0,
+    VERSION => 0,
 );
 
 if ( !@ARGV ) {
-	pod2usage( -verbose => 1 );
+    pod2usage( -verbose => 1 );
 }
 
 main();
@@ -39,34 +35,34 @@ exit 0;
 
 sub main {
 
-	
-	Getopt::Long::Configure('bundling');
-	GetOptions(
-		\%option,
-		'out|o=s',
-		'verbose|v+',
-		'man',
-		'help',
-		'VERSION!',
-	) or pod2usage(2);
-	#my $file = join ' ', @ARGV;
 
-	if ( $option{'VERSION'} ) {
-		print "$name Version = $VERSION\n";
-		exit 1;
-	}
-	elsif ( $option{'man'} ) {
-		pod2usage( -verbose => 2 );
-	}
-	elsif ( $option{'help'} ) {
-		pod2usage( -verbose => 1 );
-	}
-	
+    Getopt::Long::Configure('bundling');
+    GetOptions(
+        \%option,
+        'out|o=s',
+        'verbose|v+',
+        'man',
+        'help',
+        'VERSION!',
+    ) or pod2usage(2);
+    #my $file = join ' ', @ARGV;
 
-	# do stuff here
+    if ( $option{'VERSION'} ) {
+        print "$name Version = $VERSION\n";
+        exit 1;
+    }
+    elsif ( $option{'man'} ) {
+        pod2usage( -verbose => 2 );
+    }
+    elsif ( $option{'help'} ) {
+        pod2usage( -verbose => 1 );
+    }
 
 
-	return;
+    # do stuff here
+
+
+    return;
 }
 
 __DATA__
@@ -77,7 +73,7 @@ bin/tfind - <One-line description of commands purpose>
 
 =head1 VERSION
 
-This documentation refers to bin/tfind version HASH(0x21ad418)
+This documentation refers to bin/tfind version 0.01
 
 =head1 SYNOPSIS
 
