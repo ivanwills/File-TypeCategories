@@ -13,7 +13,8 @@ use Data::Dumper qw/Dumper/;
 use English qw/ -no_match_vars /;
 use Type::Tiny;
 use Types::Standard -types;
-use Config::General;
+use File::ShareDir qw/dist_dir/;
+use YAML qw/LoadFile/;
 
 our $VERSION = 0.01;
 our %warned_once;
@@ -62,31 +63,35 @@ sub BUILD {
     my ($self) = @_;
 
     $ENV{HOME} ||= $ENV{USERPROFILE};
-    my $conf_file = "$ENV{HOME}/.csrc";
+    my $dir = dist_dir('File-TypeCategories');
+    my $config_name = '.type_categories.yml';
 
-    return if !-r $conf_file;
+    for my $config_dir ($dir, $ENV{HOME}, '.') {
+        my $config_file = "$config_dir/$config_name";
+        next if !-f $config_file;
 
-    my $conf = Config::General->new($conf_file);
-    my %conf = $conf->getall();
-    $conf{file_types} ||= {};
+        my ($conf) = LoadFile($config_file);
 
-    for my $file_type ( keys %{ $conf{file_types} } ) {
-        $self->type_suffixes->{$file_type} ||= {};
-        for my $setting ( keys %{ $conf{file_types}{$file_type} } ) {
-            if ( $setting =~ s/^[+]//xms ) {
-                push @{ $self->type_suffixes->{$file_type}{$setting} }
-                     , ref $conf{file_types}{$file_type}{$setting} eq 'ARRAY'
-                     ? @{ $conf{file_types}{$file_type}{$setting} }
-                     : $conf{file_types}{$file_type}{$setting};
-            }
-            else {
-                $self->type_suffixes->{$file_type}{$setting}
-                     = ref $conf{file_types}{$file_type}{$setting} eq 'ARRAY'
-                     ? $conf{file_types}{$file_type}{$setting}
-                     : [ $conf{file_types}{$file_type}{$setting} ];
+        for my $file_type ( keys %{ $conf } ) {
+            $self->type_suffixes->{$file_type} ||= {};
+            for my $setting ( keys %{ $conf->{$file_type} } ) {
+                if ( $setting =~ s/^[+]//xms ) {
+                    push @{ $self->type_suffixes->{$file_type}{$setting} }
+                         , ref $conf->{$file_type}{$setting} eq 'ARRAY'
+                         ? @{ $conf->{$file_type}{$setting} }
+                         : $conf->{$file_type}{$setting};
+                }
+                else {
+                    $self->type_suffixes->{$file_type}{$setting}
+                         = ref $conf->{$file_type}{$setting} eq 'ARRAY'
+                         ? $conf->{$file_type}{$setting}
+                         : [ $conf->{$file_type}{$setting} ];
+                }
             }
         }
     }
+
+    return;
 }
 
 sub file_ok {
@@ -202,15 +207,15 @@ categories.
 
 =over 4
 
-=item C<BUILD ()
+=item C<BUILD ()>
 
 Loads the config file when new is called
 
-=item C<file_ok ($file)
+=item C<file_ok ($file)>
 
 Determins if a file matches the current config
 
-=item C<types_match ($file, $type)
+=item C<types_match ($file, $type)>
 
 Checks if a file matches C<$type>
 
