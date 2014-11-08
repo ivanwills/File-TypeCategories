@@ -8,11 +8,17 @@ my $builder = Module::Build->new(
     dist_author       => 'Ivan Wills <ivan.wills@gmail.com>',
     dist_version_from => 'lib/File/TypeCategories.pm',
     requires          => {
-        'perl'             => 5.008,
+        'perl'            => '5.006',
+        'File::ShareDir'  => '1.0',
+        'Moo'             => '1.0',
+        'Path::Class'     => 0,
+        'Type::Tiny'      => '1.0',
+        'Types::Standard' => '1.0',
+        'YAML'            => '1.0',
     },
     build_requires => {
-        'Test::More'       => 0,
-        'Test::NoWarnings' => 0,
+        'Test::More'      => 0,
+        'Test::Warnings'  => 0,
     },
     share_dir => {
         dist => [
