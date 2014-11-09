@@ -13,13 +13,20 @@ use Pod::Usage;
 use Data::Dumper qw/Dumper/;
 use English qw/ -no_match_vars /;
 use FindBin qw/$Bin/;
-use Path::Class;
+use Term::ANSIColor qw/:constants/;
+use Path::Tiny;
+use File::TypeCategories;
 
 our $VERSION = 0.01;
 my ($name)   = $PROGRAM_NAME =~ m{^.*/(.*?)$}mxs;
+my $REVERSE  = REVERSE;
+my $RESET    = RESET;
+my $BLUE     = BLUE;
+my $BOLD     = BOLD;
+my $ON_RED   = ON_RED;
+my $ON_GREEN = ON_GREEN;
 
 my %option = (
-    out     => undef,
     verbose => 0,
     man     => 0,
     help    => 0,
@@ -35,17 +42,35 @@ exit 0;
 
 sub main {
 
-
     Getopt::Long::Configure('bundling');
     GetOptions(
         \%option,
-        'out|o=s',
+        'sre_smart|smart|m',
+        'path|p=s@',
+        'file_symlinks|links|l',
+        'file_recurse|R!',
+        'file_contains=s',
+        'file_not_contains=s',
+        'file_include|include|n=s@',
+        'file_include_type|include_type|int|N=s@',
+        'file_exclude|exclude|x=s@',
+        'file_exclude_type|exclude_type|ext|X=s@',
+        'file_ignore=s',
+        'file_ignore_add|d=s',
+        'file_ignore_remove|I=s',
+        'out_suround|suround|context|C=n',
+        'out_suround_before|before|B=n',
+        'out_suround_after|after|A=n',
+        'out_totals|totals|t',
+        'out_files_only|files-only|f',
+        'out_quiet|quiet|q!',
+        'out_unique|unique|u!',
+        'out_limit|limit=i',
         'verbose|v+',
         'man',
         'help',
         'VERSION!',
     ) or pod2usage(2);
-    #my $file = join ' ', @ARGV;
 
     if ( $option{'VERSION'} ) {
         print "$name Version = $VERSION\n";
@@ -57,27 +82,94 @@ sub main {
     elsif ( $option{'help'} ) {
         pod2usage( -verbose => 1 );
     }
-
+    elsif ( !@ARGV ) {
+        warn "No search term specified\n";
+        pod2usage( -verbose => 1 );
+    }
 
     # do stuff here
 
+    my @files = map { path $_ } map {glob $_} map {split /:/, $_} $option{path} ? @{$option{path}} : ('.');
+
+    if ($option{out_suround}) {
+        $option{out_suround_before} ||= $option{out_suround};
+        $option{out_suround_after}  ||= $option{out_suround};
+        delete $option{out_suround};
+    }
+
+    my $lines = 80;
+    if ($option{sre_smart}) {
+        ($lines) = split /\s+/, `stty size` || 40;
+        if (( !$option{file_include_type} || !@{ $option{file_include_type} }) && grep {$_ eq $ARGV[0]} qw/n b ss/) {
+            $option{file_include_type}[0] = 'programing';
+        }
+        if ( !exists $option{ignore} ) {
+            my $re = join ' ', @ARGV;
+            if ( $re =~ /[A-Z]/ && $re =~ /[a-z]/ ) {
+                $option{ignore} = 0;
+            }
+            else {
+                $option{ignore} = 1;
+            }
+        }
+    }
+
+    my $tc = File::TypeCategories->new(params('file', %option));
+
+    if ($option{bw}) {
+        $REVERSE = '';
+        $RESET   = '';
+        $BLUE    = '';
+        $BOLD    = '';
+        $ON_RED  = '';
+    }
+
+    my $re = join ' ', @ARGV;
+    $re = qr/$re/;
+
+    while ( my $file = shift @files ) {
+        next if !$tc->file_ok($file);
+
+        if (-d $file) {
+            push @files, $file->children;
+        }
+
+        if ($file =~ /$re/) {
+            print "$file\n";
+        }
+    }
 
     return;
+}
+
+sub params {
+    my ($name, %var) = @_;
+    my %params;
+
+    VAR:
+    for my $key (keys %var) {
+        next VAR if $key !~ /^ $name _ /xms;
+        my $new_key = $key;
+        $new_key =~ s/^ $name _ //xms;
+        $params{$new_key} = $var{$key};
+    }
+
+    return %params;
 }
 
 __DATA__
 
 =head1 NAME
 
-bin/tfind - <One-line description of commands purpose>
+tfind - <One-line description of commands purpose>
 
 =head1 VERSION
 
-This documentation refers to bin/tfind version 0.01
+This documentation refers to tfind version 0.01
 
 =head1 SYNOPSIS
 
-   bin/tfind [option]
+   tfind [option]
 
  OPTIONS:
   -o --other         other option
@@ -85,7 +177,7 @@ This documentation refers to bin/tfind version 0.01
   -v --verbose       Show more detailed option
      --version       Prints the version information
      --help          Prints this help information
-     --man           Prints the full documentation for bin/tfind
+     --man           Prints the full documentation for tfind
 
 
 
