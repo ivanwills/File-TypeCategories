@@ -66,20 +66,34 @@ sub BUILD {
     my $dir = dist_dir('File-TypeCategories');
     my $config_name = '.type_categories.yml';
 
+    # import each config file the each subsiquent config overwrites the
+    # previous more general config.
     for my $config_dir ($dir, $ENV{HOME}, '.') {
         my $config_file = "$config_dir/$config_name";
         next if !-f $config_file;
 
         my ($conf) = LoadFile($config_file);
 
+        # import each type
         for my $file_type ( keys %{ $conf } ) {
-            $self->type_suffixes->{$file_type} ||= {};
+            $self->type_suffixes->{$file_type} ||= {
+                definite    => [],
+                possible    => [],
+                other_types => [],
+                none        => 0,
+                bang        => '',
+            };
+
+            # add each of the settings found
             for my $setting ( keys %{ $conf->{$file_type} } ) {
+
+                # if a plus (+) is prepended to possible, definite or other_types
+                # we add it here other wise it's replaced
                 if ( $setting =~ s/^[+]//xms ) {
                     push @{ $self->type_suffixes->{$file_type}{$setting} }
-                         , ref $conf->{$file_type}{$setting} eq 'ARRAY'
-                         ? @{ $conf->{$file_type}{$setting} }
-                         : $conf->{$file_type}{$setting};
+                         , ref $conf->{$file_type}{"+$setting"} eq 'ARRAY'
+                         ? @{ $conf->{$file_type}{"+$setting"} }
+                         : $conf->{$file_type}{"+$setting"};
                 }
                 else {
                     $self->type_suffixes->{$file_type}{$setting}
