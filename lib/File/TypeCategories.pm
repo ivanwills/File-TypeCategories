@@ -9,6 +9,7 @@ package File::TypeCategories;
 use Moo;
 use strict;
 use warnings;
+use autodie;
 use Data::Dumper qw/Dumper/;
 use English qw/ -no_match_vars /;
 use Type::Tiny;
@@ -56,7 +57,9 @@ has type_suffixes => (
 sub BUILD {
     my ($self) = @_;
 
-    $ENV{HOME} ||= $ENV{USERPROFILE};
+    if (!$ENV{HOME}) {
+        $ENV{HOME} = $ENV{USERPROFILE};
+    }
     my $dir = dist_dir('File-TypeCategories');
     my $config_name = '.type_categories.yml';
 
@@ -154,7 +157,7 @@ sub types_match {
 
     my $types = $self->type_suffixes;
 
-    warn "No type $type" if !exists $types->{$type} && !$warned_once{$type}++;
+    warn "No type '$type'\n" if !exists $types->{$type} && !$warned_once{$type}++;
     return 0 if !exists $types->{$type};
 
     for my $suffix ( @{ $types->{$type}{definite} } ) {
@@ -166,11 +169,10 @@ sub types_match {
     }
 
     if ( $types->{$type}{bang} ) {
-        if ( open my $fh, '<', $file ) {
-            my $line = <$fh>;
-            close $fh;
-            return 3 if $line && $line =~ /$types->{$type}{bang}/;
-        }
+        open my $fh, '<', $file;
+        my $line = <$fh>;
+        close $fh;
+        return 3 if $line && $line =~ /$types->{$type}{bang}/;
     }
 
     return 1 if $types->{$type}{none} && $file !~ m{ [^/] [.] [^/]+ $}xms;

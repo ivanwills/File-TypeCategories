@@ -3,7 +3,7 @@
 use strict;
 use warnings;
 use Test::More;
-use Test::Warnings;
+use Test::Warnings qw/warning had_no_warnings/;
 use File::TypeCategories;
 
 $ENV{HOME} = 'config';
@@ -12,6 +12,7 @@ files_nok();
 files_exclude();
 files_include();
 files_perl();
+types_match();
 done_testing();
 
 sub files_ok {
@@ -74,5 +75,18 @@ sub files_perl {
     $files = File::TypeCategories->new( exclude_type => [qw{perl}] );
 
     ok(!$files->file_ok("bin/tfind"), 'excluded');
+    return;
+}
+
+sub types_match {
+    my $files = File::TypeCategories->new( include_type => [qw{perl}] );
+
+    is(warning { $files->types_match("tfind", 'bad type') }, "No type 'bad type'\n", 'Missing type warned');
+    $files->types_match("tfind", 'bad type');
+    had_no_warnings('Second call doesn\'t warn');
+
+    ok $files->types_match("test.t", 'perl'), 'perl test';
+    ok !$files->types_match('t/.does.nothing', 'perl'), 'not perl';
+
     return;
 }
