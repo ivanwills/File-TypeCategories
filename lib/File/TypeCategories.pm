@@ -47,12 +47,6 @@ has symlinks => (
     isa     => Bool,
     default => 0,
 );
-has links => (
-    is      => 'rw',
-    isa     => HashRef,
-    default => sub {{}},
-);
-
 has type_suffixes => (
     is      => 'rw',
     isa     => HashRef,
@@ -189,8 +183,6 @@ sub types_match {
     return 0;
 }
 
-
-
 1;
 
 __END__
@@ -220,6 +212,73 @@ categories.
 =head1 SUBROUTINES/METHODS
 
 =over 4
+
+=item C<new (%hash)>
+
+=over 4
+
+=item ignore ArrayRef[Str] [ignore]
+
+The types to ignore the default C<ignore> includes:
+
+=over 4
+
+=item *
+
+build
+
+=item *
+
+backups
+
+=item *
+
+vcs
+
+=item *
+
+images
+
+=item *
+
+logs
+
+=item *
+
+editors
+
+=item *
+
+min
+
+=back
+
+=item include ArrayRef[Str]
+
+Match only files that match regexes in C<include>
+
+=item exclude ArrayRef[Str],
+
+Don't match any files that match regexes in C<exclude>
+
+=item include_type ArrayRef[Str]
+
+Match only files of types specified in C<include_type>
+
+=item exclude_type ArrayRef[Str]
+
+Don't match files of types specified in C<exclude_type>
+
+=item symlinks Bool
+
+Allow symlinks to match
+
+=item type_suffixes HASH
+
+The configuration of types. This defaulted from the dist share dir,
+C<~/.type_categories.yml> and C<./.type_categories.yml>
+
+=back
 
 =item C<BUILD ()>
 
