@@ -4,13 +4,14 @@ use strict;
 use warnings;
 use Test::More;
 use Test::Warnings;
-use Term::ANSIColor qw/:constants/;
 use File::TypeCategories;
 
 $ENV{HOME} = 'config';
 files_ok();
 files_nok();
 files_exclude();
+files_include();
+files_perl();
 done_testing();
 
 sub files_ok {
@@ -53,5 +54,25 @@ sub files_exclude {
     ok($files->file_ok("perl/test"), 'not excluded');
     ok(!$files->file_ok("perl/test/"), 'excluded');
 
+    return;
+}
+
+sub files_include {
+    my $files = File::TypeCategories->new( include => [qw{/test/}] );
+
+    ok(!$files->file_ok("perl/test"), 'excluded');
+    ok($files->file_ok("perl/test/"), 'not excluded');
+
+    return;
+}
+
+sub files_perl {
+    my $files = File::TypeCategories->new( include_type => [qw{perl}] );
+
+    ok($files->file_ok("bin/tfind"), 'not excluded');
+
+    $files = File::TypeCategories->new( exclude_type => [qw{perl}] );
+
+    ok(!$files->file_ok("bin/tfind"), 'excluded');
     return;
 }
