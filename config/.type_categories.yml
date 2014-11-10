@@ -64,7 +64,6 @@ perl:
     possible:
         - '[.]t$'
         - '[.]cgi$'
-    none: 1
     bang: perl
 php:
     definite:
