@@ -75,18 +75,21 @@ sub files_perl {
     $files = File::TypeCategories->new( exclude_type => [qw{perl}] );
 
     ok(!$files->file_ok("bin/tfind"), 'excluded');
+
     return;
 }
 
 sub types_match {
     my $files = File::TypeCategories->new( include_type => [qw{perl}] );
 
-    is(warning { $files->types_match("tfind", 'bad type') }, "No type 'bad type'\n", 'Missing type warned');
-    $files->types_match("tfind", 'bad type');
+    is(warning { $files->types_match('tfind', 'bad type') }, "No type 'bad type'\n", 'Missing type warned');
+    $files->types_match('tfind', 'bad type');
     had_no_warnings('Second call doesn\'t warn');
 
-    ok $files->types_match("test.t", 'perl'), 'perl test';
-    ok !$files->types_match('t/.does.nothing', 'perl'), 'not perl';
+    ok  $files->types_match('test.t'         , 'perl'), 'test.t          perl test';
+    ok !$files->types_match('t/.does.nothing', 'perl'), 't/.does.nothing not perl';
+    ok !$files->types_match('t/perlcriticrc' , 'perl'), 't/perlcriticrc  not perl';
+    ok  $files->types_match('bin/tfind', 'perl')      , 'bin/tfind       is perl';
 
     return;
 }
