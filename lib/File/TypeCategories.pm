@@ -172,7 +172,9 @@ sub types_match {
         open my $fh, '<', $file;
         my $line = <$fh>;
         close $fh;
-        return 3 if $line && $line =~ /$types->{$type}{bang}/;
+        for my $bang ( @{ $types->{$type}{bang} } ) {
+            return 3 if $line && $line =~ /$bang/;
+        }
     }
 
     return 1 if $types->{$type}{none} && $file !~ m{ [^/] [.] [^/]+ $}xms;

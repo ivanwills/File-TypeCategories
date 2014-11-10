@@ -89,7 +89,7 @@ sub types_match {
     ok  $files->types_match('test.t'         , 'perl'), 'test.t          perl test';
     ok !$files->types_match('t/.does.nothing', 'perl'), 't/.does.nothing not perl';
     ok !$files->types_match('t/perlcriticrc' , 'perl'), 't/perlcriticrc  not perl';
-    ok  $files->types_match('bin/tfind', 'perl')      , 'bin/tfind       is perl';
+    ok  $files->types_match('bin/tfind'      , 'perl'), 'bin/tfind       is perl';
 
     return;
 }
