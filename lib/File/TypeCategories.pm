@@ -122,7 +122,6 @@ sub file_ok {
             $possible-- if $match == 2;
             $matched += $match;
         }
-        return 0 if $matched <= 0;
     }
 
     if (!$matched) {
@@ -137,7 +136,7 @@ sub file_ok {
     if ($self->include) {
         my $matches = 0;
         for my $include (@{ $self->include }) {
-            $matches ||= $file =~ /$include/;
+            $matches = $file =~ /$include/;
             last if $matches;
         }
         return 0 if !$matches;
@@ -157,8 +156,10 @@ sub types_match {
 
     my $types = $self->type_suffixes;
 
-    warn "No type '$type'\n" if !exists $types->{$type} && !$warned_once{$type}++;
-    return 0 if !exists $types->{$type};
+    if ( !exists $types->{$type} ) {
+        warn "No type '$type'\n" if !$warned_once{$type}++;
+        return 0;
+    }
 
     for my $suffix ( @{ $types->{$type}{definite} } ) {
         return 3 if $file =~ /$suffix/;
