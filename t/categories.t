@@ -80,7 +80,14 @@ sub files_perl {
 }
 
 sub types_match {
-    my $files = File::TypeCategories->new( include_type => [qw{perl}] );
+    my $files = File::TypeCategories->new(
+        include_type  => [qw{perl}],
+        type_suffixes => {
+            not_dot => {
+                none => 1,
+            },
+        },
+    );
 
     is(warning { $files->types_match('tfind', 'bad type') }, "No type 'bad type'\n", 'Missing type warned');
     $files->types_match('tfind', 'bad type');
@@ -89,7 +96,11 @@ sub types_match {
     ok  $files->types_match('test.t'         , 'perl'), 'test.t          perl test';
     ok !$files->types_match('t/.does.nothing', 'perl'), 't/.does.nothing not perl';
     ok !$files->types_match('t/perlcriticrc' , 'perl'), 't/perlcriticrc  not perl';
+    ok !$files->types_match('t/missing-file' , 'perl'), 't/missing-file  not perl';
     ok  $files->types_match('bin/tfind'      , 'perl'), 'bin/tfind       is perl';
+
+    ok  $files->types_match('t/missing-file', 'not_dot'), 't/missing-file is not dot';
+    ok !$files->types_match('t/f.ile'       , 'not_dot'), 't/f.ile        is dot';
 
     return;
 }
