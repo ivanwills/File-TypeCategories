@@ -8,6 +8,7 @@ use File::TypeCategories;
 
 $ENV{HOME} = 'config';
 files_ok();
+files_possible();
 files_nok();
 files_exclude();
 files_include();
@@ -27,6 +28,26 @@ sub files_ok {
     for my $file (@ok_files) {
         ok($files->file_ok($file), $file);
     }
+
+    return;
+}
+
+sub files_possible {
+    my $files = File::TypeCategories->new(
+        include_type  => [qw/possible_a possible_b possible_c perl/],
+        exclude_type  => [qw/possible_d possible_e possible_f php/],
+        type_suffixes => {
+            possible_a => { possible => ['a'], },
+            possible_b => { possible => ['b'], },
+            possible_c => { possible => ['c'], },
+            possible_d => { possible => ['d'], },
+            possible_e => { possible => ['e'], },
+            possible_f => { possible => ['f'], },
+        },
+    );
+
+    ok  $files->file_ok('abc'), 'abc is possible';
+    ok !$files->file_ok('def'), 'def is possibly not';
 
     return;
 }
@@ -97,6 +118,7 @@ sub types_match {
     ok !$files->types_match('t/.does.nothing', 'perl'), 't/.does.nothing not perl';
     ok !$files->types_match('t/perlcriticrc' , 'perl'), 't/perlcriticrc  not perl';
     ok !$files->types_match('t/missing-file' , 'perl'), 't/missing-file  not perl';
+    ok !$files->types_match('t'              , 'perl'), 't/              not perl';
     ok  $files->types_match('bin/tfind'      , 'perl'), 'bin/tfind       is perl';
 
     ok  $files->types_match('t/missing-file', 'not_dot'), 't/missing-file is not dot';
