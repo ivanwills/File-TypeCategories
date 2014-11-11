@@ -168,12 +168,12 @@ sub types_match {
         return 2 if $file =~ /$suffix/;
     }
 
-    if ( $types->{$type}{bang} ) {
+    if ( $types->{$type}{bang} && -r $file && -f $file && -s $file ) {
         open my $fh, '<', $file;
         my $line = <$fh>;
         close $fh;
         for my $bang ( @{ $types->{$type}{bang} } ) {
-            return 3 if $line && $line =~ /$bang/;
+            return 3 if $line =~ /$bang/;
         }
     }
 
