@@ -129,7 +129,7 @@ sub main {
         next if !$tc->file_ok($file);
 
         if (-d $file) {
-            push @files, $file->children;
+            eval { push @files, $file->children };
         }
 
         if ($file =~ /$re/) {
