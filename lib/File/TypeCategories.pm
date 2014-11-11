@@ -291,7 +291,7 @@ Loads the config file when new is called
 
 =item C<file_ok ($file)>
 
-Determins if a file matches the current config
+Determines if a file matches the current config
 
 =item C<types_match ($file, $type)>
 

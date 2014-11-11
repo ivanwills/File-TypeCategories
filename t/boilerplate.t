@@ -46,5 +46,6 @@ not_in_file_ok(Changes =>
     "placeholder date/time"       => qr(Date/time)
 );
 
+module_boilerplate_ok('bin/tfind');
 module_boilerplate_ok('lib/File/TypeCategories.pm');
 done_testing();
