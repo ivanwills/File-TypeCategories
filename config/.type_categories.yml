@@ -22,7 +22,12 @@ images:
         - '[.]jpe?g$'
         - '[.]gif$'
         - '[.]swf$'
+        - '[.]tiff?$'
+        - '[.]nef$'
+fonts:
+    definite:
         - '[.]ttf$'
+        - '[.]wof$'
 logs:
     definite:
         - logs?(?:$|/)
@@ -31,6 +36,7 @@ backups:
         - '[.]orig$'
         - '[.]copy$'
         - '~\d*$'
+        - '[.]bak$'
 vcs:
     definite:
         - '[.]git'
