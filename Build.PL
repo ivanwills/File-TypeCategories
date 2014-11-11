@@ -9,6 +9,7 @@ my $builder = Module::Build->new(
     dist_version_from => 'lib/File/TypeCategories.pm',
     requires          => {
         'perl'            => '5.006',
+        'autodie'         => 0,
         'File::chdir'     => 0,
         'File::ShareDir'  => '1.0',
         'Moo'             => '1.0',
