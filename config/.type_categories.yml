@@ -8,6 +8,8 @@ ignore:
         - logs
         - editors
         - min
+        - npm
+        - jar
 editors:
     definite:
         - '~\d*$'
@@ -213,3 +215,21 @@ jt:
     other_types:
         - jsp
         - ftl
+tt:
+    definite:
+        - '[.]tt2?$'
+handlebars:
+    definite:
+        - '[.]hbs$'
+template:
+    other_types:
+        - jt
+        - handlebars
+        - tt
+npm:
+    definite:
+        - '\bnode_modules/'
+csv:
+    definite: '[.](?:csv|tab)$'
+jar:
+    definite: '[.](?:jar|jsa|dll)$'
