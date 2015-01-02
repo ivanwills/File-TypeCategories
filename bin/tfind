@@ -26,12 +26,7 @@ my $BOLD     = BOLD;
 my $ON_RED   = ON_RED;
 my $ON_GREEN = ON_GREEN;
 
-my %option = (
-    verbose => 0,
-    man     => 0,
-    help    => 0,
-    VERSION => 0,
-);
+my %option;
 
 if ( !@ARGV ) {
     pod2usage( -verbose => 1 );
@@ -67,10 +62,10 @@ sub main {
         'verbose|v+',
         'man',
         'help',
-        'VERSION!',
+        'version',
     ) or pod2usage(2);
 
-    if ( $option{'VERSION'} ) {
+    if ( $option{'version'} ) {
         print "$name Version = $VERSION\n";
         exit 1;
     }
