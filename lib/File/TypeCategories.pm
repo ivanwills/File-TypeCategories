@@ -148,7 +148,7 @@ sub file_ok {
         }
     }
 
-    return 1;
+    return $matched || $possible;
 }
 
 sub types_match {
