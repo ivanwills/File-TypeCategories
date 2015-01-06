@@ -93,4 +93,4 @@ errors.err
 .travis.yml
 vim.sh
 tmp*
-temp*
+temp/*
