@@ -17,7 +17,7 @@ use Types::Standard -types;
 use File::ShareDir qw/dist_dir/;
 use YAML qw/LoadFile/;
 
-our $VERSION = 0.01;
+our $VERSION = 0.02;
 our %warned_once;
 
 has ignore => (
@@ -202,7 +202,7 @@ File::TypeCategories - Determine if files match a specific type
 
 =head1 VERSION
 
-This documentation refers to File::TypeCategories version 0.01
+This documentation refers to File::TypeCategories version 0.02
 
 =head1 SYNOPSIS
 
