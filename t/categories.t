@@ -73,8 +73,8 @@ sub files_nok {
 sub files_exclude {
     my $files = File::TypeCategories->new( exclude => [qw{/test/}] );
 
-    ok($files->file_ok("perl/test"), 'not excluded');
-    ok(!$files->file_ok("perl/test/"), 'excluded');
+    ok($files->file_ok("perl/test"), 'test exclude - not excluded');
+    ok(!$files->file_ok("perl/test/"), 'test exclude - excluded');
 
     return;
 }
@@ -82,8 +82,8 @@ sub files_exclude {
 sub files_include {
     my $files = File::TypeCategories->new( include => [qw{/test/}] );
 
-    ok(!$files->file_ok("perl/test"), 'excluded');
-    ok($files->file_ok("perl/test/"), 'not excluded');
+    ok(!$files->file_ok("perl/test"), 'test exclude file - excluded');
+    ok(!$files->file_ok("perl/test/"), 'test exlude dir - not excluded');
 
     return;
 }
@@ -91,11 +91,11 @@ sub files_include {
 sub files_perl {
     my $files = File::TypeCategories->new( include_type => [qw{perl}] );
 
-    ok($files->file_ok("bin/tfind"), 'not excluded');
+    ok($files->file_ok("bin/tfind"), 'perl include - not excluded');
 
     $files = File::TypeCategories->new( exclude_type => [qw{perl}] );
 
-    ok(!$files->file_ok("bin/tfind"), 'excluded');
+    ok(!$files->file_ok("bin/tfind"), 'perl include - excluded');
 
     return;
 }
