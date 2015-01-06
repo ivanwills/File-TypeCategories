@@ -115,13 +115,16 @@ sub file_ok {
     return 1 if -d $file;
 
     my $possible = 0;
-    my $matched = 0;
+    my $matched  = 0;
+    my $includes = 0;
+
     if ( @{ $self->include_type }) {
         for my $type (@{ $self->include_type }) {
             my $match = $self->types_match($file, $type);
             $possible-- if $match == 2;
             $matched += $match;
         }
+        $includes++;
     }
 
     if (!$matched) {
@@ -140,6 +143,7 @@ sub file_ok {
             last if $matches;
         }
         return 0 if !$matches;
+        $includes++;
     }
 
     if ($self->exclude) {
@@ -148,7 +152,7 @@ sub file_ok {
         }
     }
 
-    return $matched || $possible;
+    return !$includes || $matched || $possible;
 }
 
 sub types_match {
