@@ -1,5 +1,13 @@
 Revision history for File-TypeCategories
 
+0.03   2015-06-17
+        Updating for release of version 0.03
+        Added missing files (Ivan Wills)
+        Tagging as CPAN released module (Ivan Wills)
+        Set Test::More minimum version (Ivan Wills)
+        Added todo tasks (Ivan Wills)
+        Added config for coveralls.io (Ivan Wills)
+
 0.02   2015-01-06
         Updating for release of version 0.02
         Updated License (Ivan Wills)
