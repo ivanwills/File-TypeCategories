@@ -76,8 +76,8 @@ sub test_config {
                 .git
                 .svn
                 .bzr
-                CVS
-                RCS
+                CVS/
+                RCS/
                 file,v
             }],
         },

@@ -44,8 +44,8 @@ vcs:
         - '[.]git'
         - '[.]bzr'
         - '[.]svn'
-        - CVS
-        - RCS
+        - CVS/
+        - RCS/
         - ',v$'
 build:
     definite:

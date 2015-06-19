@@ -55,7 +55,6 @@ sub files_possible {
 sub files_nok {
     my $files = File::TypeCategories->new();
     my @nok_files = qw{
-        /blah/CVS
         /blah/CVS/thing
         /blah/file.copy
         /blah/file~
