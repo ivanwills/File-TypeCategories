@@ -1,5 +1,10 @@
 Revision history for File-TypeCategories
 
+0.04   2015-07-20
+        Updating for release of version 0.04
+        Added Perl 5.22 to list of perl versions to build with (Ivan Wills)
+        Changed CVS and RSC to explicitly check that they are directories (Ivan Wills)
+
 0.03   2015-06-17
         Updating for release of version 0.03
         Added missing files (Ivan Wills)
