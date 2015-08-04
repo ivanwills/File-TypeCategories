@@ -1,5 +1,9 @@
 Revision history for File-TypeCategories
 
+0.05   2015-08-04
+        Updating for release of version 0.05
+        Removed creation of makefile (Ivan Wills)
+
 0.04   2015-07-20
         Updating for release of version 0.04
         Added Perl 5.22 to list of perl versions to build with (Ivan Wills)
