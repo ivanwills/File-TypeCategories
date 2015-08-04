@@ -4,7 +4,6 @@ Changes
 config/.type_categories.yml
 lib/File/TypeCategories.pm
 LICENSE
-Makefile.PL
 MANIFEST
 META.json
 META.yml
