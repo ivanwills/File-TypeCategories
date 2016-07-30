@@ -44,9 +44,8 @@ has exclude_type => (
     default => sub{[]},
 );
 has symlinks => (
-    is      => 'rw',
-    isa     => Bool,
-    default => undef,
+    is  => 'rw',
+    isa => Bool,
 );
 has type_suffixes => (
     is      => 'rw',
