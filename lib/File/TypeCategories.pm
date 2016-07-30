@@ -46,7 +46,7 @@ has exclude_type => (
 has symlinks => (
     is      => 'rw',
     isa     => Bool,
-    default => 0,
+    default => undef,
 );
 has type_suffixes => (
     is      => 'rw',
