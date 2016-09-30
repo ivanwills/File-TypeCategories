@@ -59,7 +59,7 @@ sub BUILD {
     if (!$ENV{HOME}) {
         $ENV{HOME} = $ENV{USERPROFILE};
     }
-    my $dir = dist_dir('File-TypeCategories');
+    my $dir = eval { dist_dir('File-TypeCategories'); };
     my $config_name = '.type_categories.yml';
 
     # import each config file the each subsiquent config overwrites the
