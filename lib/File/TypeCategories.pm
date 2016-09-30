@@ -65,6 +65,7 @@ sub BUILD {
     # import each config file the each subsiquent config overwrites the
     # previous more general config.
     for my $config_dir ($dir, $ENV{HOME}, '.') {
+        next if ! $config_dir || !-d $config_dir;
         my $config_file = "$config_dir/$config_name";
         next if !-f $config_file;
 
