@@ -18,6 +18,9 @@ my $builder = Module::Build->new(
         'Types::Standard' => '1.0',
         'YAML'            => '1.0',
     },
+    configure_requires => {
+        'Module::Build' => 0.38,
+    },
     build_requires => {
         'Test::More'      => '0.88',
         'Test::Warnings'  => '0.026',
