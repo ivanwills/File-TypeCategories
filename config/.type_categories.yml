@@ -120,10 +120,20 @@ less:
         - '[.]less$'
 javascript:
     definite:
-        - '[.]js$'
+        - '[.]jsx$'
+typescript:
+    definite:
+        - '[.]tsx$'
+coffeescript:
+    definite:
+        - .coffee$
+        - .cson$
+        - .litcoffee$
 js:
     other_types:
         - javascript
+        - typescript
+        - coffeescript
 json:
     definite:
         - '[.]ja?son$'
