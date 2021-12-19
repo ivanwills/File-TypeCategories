@@ -44,30 +44,22 @@ sub main {
         \%option,
         'sre_smart|smart|m',
         'path|p=s@',
-        'file_symlinks|links|l',
+        'file_symlinks|links|l!',
         'file_recurse|R!',
         'file_include|include|n=s@',
         'file_include_type|include_type|int|N=s@',
         'file_exclude|exclude|x=s@',
         'file_exclude_type|exclude_type|ext|X=s@',
-        'file_ignore=s@',
-        'file_ignore_add|d=s@',
-        'file_ignore_remove|I=s@',
-        'out_suround|suround|context|C=n',
-        'out_suround_before|before|B=n',
-        'out_suround_after|after|A=n',
-        'out_totals|totals|t',
-        'out_files_only|files-only|f',
-        'out_quiet|quiet|q!',
-        'out_unique|unique|u!',
-        'out_limit|limit=i',
+        'file_ignore|ignore=s@',
+        'file_ignore_add|ignore-add|d=s@',
+        'file_ignore_remove|ignore-remove|I=s@',
         'verbose|v+',
         'man',
         'help',
-        'version',
+        'VERSION!',
     ) or pod2usage(2);
 
-    if ( $option{'version'} ) {
+    if ( $option{'VERSION'} ) {
         print "$name Version = $VERSION\n";
         exit 1;
     }
@@ -85,12 +77,6 @@ sub main {
     # do stuff here
 
     my @files = map { path $_ } map {glob $_} map {split /:/, $_} $option{path} ? @{$option{path}} : ('.');
-
-    if ($option{out_suround}) {
-        $option{out_suround_before} ||= $option{out_suround};
-        $option{out_suround_after}  ||= $option{out_suround};
-        delete $option{out_suround};
-    }
 
     my $lines = 80;
     if ($option{sre_smart}) {
@@ -178,37 +164,39 @@ This documentation refers to tfind version 0.08
    tfind [option] regex
 
  OPTIONS:
-  -m --smart    Smart regular expression
-  -p --path[=]path
-                Don't use the current directory for searching use path
-  -l --links    Match symlinks
-  -n --include[=]regex
-                Match by regex
-  -N --int[=]type
-                Match only files of this type (multiples ok)
-  -x --exclude[regex
-                Exclude by regex
-  -X --ext[=]type
-                Don't match files of this type (multiples ok)
-     --ignore[=]type
-                Add type to the types to be ignored (multiples ok, overwrites default types)
-  -d --ignore_add[=]type
-                Add extra type to default types (multiples ok)
-  -I --ignore_remove[=]type
-                Remove type from default types (multiples ok)
-  -C --context[=]int
-  -B --before[=]int
-  -A --after[=]int
-  -t --totals
-  -f --files-only
-  -q --quiet
-  -u --unique
-     --limit[=]int
+    -m --smart    Smart regular expression
+    -p --path[=]path
+                  Don't use the current directory for searching use path
+   -l --follow-symlinks
+                 Follow symlinks to directories
+      --no-follow-symlinks
+                 Don't follow symlinks to directories
+      --recurse  Recurse into subdirectories (Default)
+      --no-recurse
+                 Turns off recursing into subdirectories
+   -n --file-include[=]string
+                 Only include files mathcing the regex (Multiple)
+   -N --int[=]string
+      --include-type[=]string
+                 Only include files the specified type (Mulitple)
+                 see perldoc File::TypeCategories available types
+   -x --file-exclude[=]string
+                 Don't include files mathcing the regex (Multiple)
+   -X --ext[=]string
+      --exclude-type[=]string
+                 Don't include files the specified type (Mulitple)
+                 see perldoc File::TypeCategories available types
+       --ignore[=]type
+                  Add type to the types to be ignored (multiples ok, overwrites default types)
+    -d --ignore_add[=]type
+                  Add extra type to default types (multiples ok)
+    -I --ignore_remove[=]type
+                  Remove type from default types (multiples ok)
 
-  -v --verbose       Show more detailed option
-     --version       Prints the version information
-     --help          Prints this help information
-     --man           Prints the full documentation for tfind
+   -v --verbose  Show more detailed option
+      --VERSION  Prints the version information
+      --help     Prints this help information
+      --man      Prints the full documentation for cs with example usage
 
 =head1 DESCRIPTION
 
