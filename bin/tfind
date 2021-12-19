@@ -26,7 +26,9 @@ my $BOLD     = BOLD;
 my $ON_RED   = ON_RED;
 my $ON_GREEN = ON_GREEN;
 
-my %option;
+my %option = (
+    ignore => ['ignore'],
+);
 
 if ( !@ARGV ) {
     pod2usage( -verbose => 1 );
@@ -48,9 +50,9 @@ sub main {
         'file_include_type|include_type|int|N=s@',
         'file_exclude|exclude|x=s@',
         'file_exclude_type|exclude_type|ext|X=s@',
-        'file_ignore=s',
-        'file_ignore_add|d=s',
-        'file_ignore_remove|I=s',
+        'file_ignore=s@',
+        'file_ignore_add|d=s@',
+        'file_ignore_remove|I=s@',
         'out_suround|suround|context|C=n',
         'out_suround_before|before|B=n',
         'out_suround_after|after|A=n',
@@ -105,6 +107,17 @@ sub main {
                 $option{ignore} = 1;
             }
         }
+    }
+
+    if ($option{file_ignore_add}) {
+        push @{$option{file_ignore}}, @{$option{file_ignore_add}};
+        delete $option{file_ignore_add};
+    }
+    if ($option{file_ignore_remove}) {
+        for my $remove (@{ $option{file_ignore_remove} }) {
+            @{$option{file_ignore}} = grep {$_ ne $remove} @{$option{file_ignore}};
+        }
+        delete $option{file_ignore_remove};
     }
 
     my $tc = File::TypeCategories->new(params('file', %option));
@@ -178,9 +191,11 @@ This documentation refers to tfind version 0.08
   -X --ext[=]type
                 Don't match files of this type (multiples ok)
      --ignore[=]type
-                Add type to the types to be ignored (multiples ok)
+                Add type to the types to be ignored (multiples ok, overwrites default types)
   -d --ignore_add[=]type
+                Add extra type to default types (multiples ok)
   -I --ignore_remove[=]type
+                Remove type from default types (multiples ok)
   -C --context[=]int
   -B --before[=]int
   -A --after[=]int
