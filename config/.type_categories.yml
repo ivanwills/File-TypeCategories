@@ -97,7 +97,7 @@ html:
         - '[.]xml$'
 test:
     definite:
-      - '\/tx?\/.*[.]t$'
+        - '\/tx?\/.*[.]t$'
         - 'test[.]pl$'
 svg:
     definite:
@@ -126,9 +126,9 @@ typescript:
         - '[.]tsx$'
 coffeescript:
     definite:
-        - [.]coffee$
-        - [.]cson$
-        - [.]litcoffee$
+        - '[.]coffee$'
+        - '[.]cson$'
+        - '[.]litcoffee$'
 js:
     other_types:
         - javascript
