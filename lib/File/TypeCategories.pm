@@ -10,6 +10,7 @@ use Moo;
 use strict;
 use warnings;
 use autodie;
+use version;
 use Data::Dumper qw/Dumper/;
 use English qw/ -no_match_vars /;
 use Type::Tiny;
@@ -17,7 +18,7 @@ use Types::Standard -types;
 use File::ShareDir qw/dist_dir/;
 use YAML qw/LoadFile/;
 
-our $VERSION = 0.08;
+our $VERSION = version->new('0.8.0');
 our %warned_once;
 
 has ignore => (

@@ -8,6 +8,7 @@
 
 use strict;
 use warnings;
+use version;
 use Getopt::Long;
 use Pod::Usage;
 use Data::Dumper qw/Dumper/;
@@ -17,7 +18,7 @@ use Term::ANSIColor qw/:constants/;
 use Path::Tiny;
 use File::TypeCategories;
 
-our $VERSION = 0.08;
+our $VERSION = version->new('0.8.0');
 my ($name)   = $PROGRAM_NAME =~ m{^.*/(.*?)$}mxs;
 my $REVERSE  = REVERSE;
 my $RESET    = RESET;
