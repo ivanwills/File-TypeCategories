@@ -158,7 +158,7 @@ tfind - Find files based on file types
 
 =head1 VERSION
 
-This documentation refers to tfind version 0.08
+This documentation refers to tfind version 0.8.0
 
 =head1 SYNOPSIS
 

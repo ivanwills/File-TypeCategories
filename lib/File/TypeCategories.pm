@@ -203,7 +203,7 @@ File::TypeCategories - Determine if files match a specific type
 
 =head1 VERSION
 
-This documentation refers to File::TypeCategories version 0.08
+This documentation refers to File::TypeCategories version 0.8.0
 
 =head1 SYNOPSIS
 
