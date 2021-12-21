@@ -11,6 +11,7 @@ ignore:
         - npm
         - jar
         - coverage
+        - temp
 editors:
     definite:
         - '~\d*$'
@@ -246,3 +247,5 @@ jar:
     definite: '[.](?:jar|jsa|dll)$'
 coverage:
     definite: '\bcoverage/'
+temp:
+    definite: '\bte?mp/'
