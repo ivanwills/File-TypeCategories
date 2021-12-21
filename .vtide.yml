@@ -22,5 +22,9 @@ terminals:
       - all-tests
   2:
     edit:
-        - lib
+        - lib/File/TypeCategories.pm
         - bin
+  3:
+    edit:
+        - lib/File/TypeCategories/Git.pm
+        - t/git.t

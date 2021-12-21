@@ -174,38 +174,38 @@ This documentation refers to tfind version 0.8.0
  OPTIONS:
    -m --smart    Smart regular expression
    -p --path[=]path
-                  Don't use the current directory for searching use path
+                 Don't use the current directory for searching use path
    -l --follow-symlinks
-                  Follow symlinks to directories
+                 Follow symlinks to directories
       --no-follow-symlinks
-                  Don't follow symlinks to directories
-      --recurse   Recurse into subdirectories (Default)
+                 Don't follow symlinks to directories
+      --recurse  Recurse into subdirectories (Default)
       --no-recurse
-                  Turns off recursing into subdirectories
+                 Turns off recursing into subdirectories
    -n --file-include[=]string
-                  Only include files mathcing the regex (Multiple)
+                 Only include files mathcing the regex (Multiple)
    -N --int[=]string
       --include-type[=]string
-                  Only include files the specified type (Mulitple)
-                  see perldoc File::TypeCategories available types
+                 Only include files the specified type (Mulitple)
+                 see perldoc File::TypeCategories available types
    -x --file-exclude[=]string
-                  Don't include files mathcing the regex (Multiple)
+                 Don't include files mathcing the regex (Multiple)
    -X --ext[=]string
       --exclude-type[=]string
-                  Don't include files the specified type (Mulitple)
-                  see perldoc File::TypeCategories available types
+                 Don't include files the specified type (Mulitple)
+                 see perldoc File::TypeCategories available types
        --ignore[=]type
-                  Add type to the types to be ignored (multiples ok, overwrites default types)
+                 Add type to the types to be ignored (multiples ok, overwrites default types)
     -d --ignore_add[=]type
-                  Add extra type to default types (multiples ok)
+                 Add extra type to default types (multiples ok)
     -I --ignore_remove[=]type
-                  Remove type from default types (multiples ok)
-    -t --types    Show all types (or details of a type if type also passed)
+                 Remove type from default types (multiples ok)
+    -t --types   Show all types (or details of a type if type also passed)
 
-     -v --verbose Show more detailed option
-        --VERSION Prints the version information
-        --help    Prints this help information
-        --man     Prints the full documentation for cs with example usage
+   -v --verbose  Show more detailed option
+      --VERSION  Prints the version information
+      --help     Prints this help information
+      --man      Prints the full documentation for find with example usage
 
 =head1 DESCRIPTION
 

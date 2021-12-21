@@ -17,6 +17,7 @@ use Type::Tiny;
 use Types::Standard -types;
 use File::ShareDir qw/dist_dir/;
 use YAML qw/LoadFile/;
+use File::TypeCategories::Git;
 
 our $VERSION = version->new('0.8.0');
 our %warned_once;
@@ -25,6 +26,10 @@ has ignore => (
     is      => 'rw',
     isa     => ArrayRef[Str],
     default => sub{[qw{ ignore }]},
+);
+has git => (
+    is  => 'rw',
+    isa => Bool,
 );
 has include => (
     is  => 'rw',
@@ -110,6 +115,12 @@ sub BUILD {
                 }
             }
         }
+    }
+
+    if ($self->git) {
+        my $git_ignore = File::TypeCategories::Git->new();
+        $self->type_suffixes->{git} = $git_ignore->ignores();
+        push @{ $self->type_suffixes->{ignore} }, 'git';
     }
 
     return;
