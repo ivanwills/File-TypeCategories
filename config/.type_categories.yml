@@ -10,6 +10,7 @@ ignore:
         - min
         - npm
         - jar
+        - coverage
 editors:
     definite:
         - '~\d*$'
@@ -243,3 +244,5 @@ csv:
     definite: '[.](?:csv|tab)$'
 jar:
     definite: '[.](?:jar|jsa|dll)$'
+coverage:
+    definite: '\bcoverage/'
