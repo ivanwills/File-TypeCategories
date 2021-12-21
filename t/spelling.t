@@ -33,5 +33,6 @@ add_stopwords(qw/
     dist
     min
     vcs
+    Param
 /);
 all_pod_files_spelling_ok();
