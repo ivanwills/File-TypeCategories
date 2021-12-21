@@ -74,13 +74,22 @@ sub BUILD {
 
         # import each type
         for my $file_type ( keys %{ $conf } ) {
-            $self->type_suffixes->{$file_type} ||= {
-                definite    => [],
-                possible    => [],
-                other_types => [],
-                none        => 0,
-                bang        => '',
-            };
+            if ( ! $self->type_suffixes->{$file_type} ) {
+                $self->type_suffixes->{$file_type} ||= {
+                    definite    => [],
+                    possible    => [],
+                    other_types => [],
+                    none        => 0,
+                    bang        => '',
+                    Config      => $config_file,
+                };
+            }
+            else {
+                if ( ! ref $self->type_suffixes->{$file_type}{Config} ) {
+                    $self->type_suffixes->{$file_type}{Config} = [ $self->type_suffixes->{$file_type}{Config} ];
+                }
+                push @{$self->type_suffixes->{$file_type}{Config}}, $config_file;
+            }
 
             # add each of the settings found
             for my $setting ( keys %{ $conf->{$file_type} } ) {
@@ -191,6 +200,40 @@ sub types_match {
     }
 
     return 0;
+}
+
+sub show_types {
+    my ($self, $type) = @_;
+    my $out = '';
+
+    if ( $type ) {
+        my $details = $self->type_suffixes->{$type};
+        $out .= "$type:\n";
+        if ($details) {
+            for my $key (sort keys %{ $details }) {
+                next if $details->{$key} eq '' || (ref $details->{$key} && $#{$details->{$key}} == -1);
+                my $value = $details->{$key};
+                my $gap = ' ';
+                if (ref $value) {
+                    my $min_length = length join ', ', @$value;
+                    my $seperator = $min_length > 78 ? "\n    " : ', ';
+                    $gap = $min_length > 78 ? "\n    " : ' ';
+                    $value = join $seperator, map {$min_length > 78 ? $_ : "'$_'"} @$value;
+                }
+                $out .= "  $key:$gap$value\n";
+            }
+        }
+        else {
+            $out .= "  Type not defined\n";
+        }
+    }
+    else {
+        $out .= "Types:\n  ";
+        $out .= join "\n  ", sort keys %{ $self->type_suffixes };
+        $out .= "\n";
+    }
+
+    return $out;
 }
 
 1;

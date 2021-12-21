@@ -54,6 +54,7 @@ sub main {
         'file_ignore|ignore=s@',
         'file_ignore_add|ignore-add|d=s@',
         'file_ignore_remove|ignore-remove|I=s@',
+        'types|t!',
         'verbose|v+',
         'man',
         'help',
@@ -70,13 +71,16 @@ sub main {
     elsif ( $option{'help'} ) {
         pod2usage( -verbose => 1 );
     }
+    elsif ( $option{types} ) {
+        print File::TypeCategories->new()->show_types(@ARGV);
+        exit 0;
+    }
     elsif ( !@ARGV ) {
         warn "No search term specified\n";
         pod2usage( -verbose => 1 );
     }
 
     # do stuff here
-
     my @files = map { path $_ } map {glob $_} map {split /:/, $_} $option{path} ? @{$option{path}} : ('.');
 
     my $lines = 80;
