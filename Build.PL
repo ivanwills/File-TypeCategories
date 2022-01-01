@@ -17,6 +17,7 @@ my $builder = Module::Build->new(
         'Type::Tiny'      => '1.0',
         'Types::Standard' => '1.0',
         'YAML'            => '1.0',
+        'version'         => 0,
     },
     configure_requires => {
         'Module::Build' => 0.38,
