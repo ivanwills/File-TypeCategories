@@ -18,7 +18,7 @@ use Term::ANSIColor qw/:constants/;
 use Path::Tiny;
 use File::TypeCategories;
 
-our $VERSION = version->new('0.8.0');
+our $VERSION = version->new('0.8.1');
 my ($name)   = $PROGRAM_NAME =~ m{^.*/(.*?)$}mxs;
 my $REVERSE  = REVERSE;
 my $RESET    = RESET;
@@ -162,7 +162,7 @@ tfind - Find files based on file types
 
 =head1 VERSION
 
-This documentation refers to tfind version 0.8.0
+This documentation refers to tfind version 0.8.1
 
 =head1 SYNOPSIS
 

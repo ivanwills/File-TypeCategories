@@ -1,5 +1,24 @@
 Revision history for File-TypeCategories
 
+0.8.1   2022-01-01
+        Updating for release of version 0.8.1
+        Updating travis versions (Ivan Wills)
+        Adding missing dependency (Ivan Wills)
+        Updated date (Ivan Wills)
+        Adding temp folders to default ignore (Ivan Wills)
+        Fixing --includ-type and exclude-type (Ivan Wills)
+        Adding coverage directories, including in ignore (Ivan Wills)
+        Adding doc details for new option (Ivan Wills)
+        Adding the ability to show configured types (Ivan Wills)
+        Adding that x is optional for typescript and javascript (Ivan Wills)
+        More version updates (Ivan Wills)
+        Updating version style (Ivan Wills)
+        Added quotes to make YAML happier (Ivan Wills)
+        Updated docs to match cs (and code) (Ivan Wills)
+        Fixing ignore type logic (Ivan Wills)
+        Some minor fixes to selectors (Ivan Wills)
+        Adding more javascript like languages (Ivan Wills)
+
 0.08   2018-10-24
         Updating for release of version 0.08
         Perl 5.8 support is dying off so removing it even if the code would work, also adding tests for 5.26 & 5.28 (Ivan Wills)
