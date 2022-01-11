@@ -45,6 +45,7 @@ sub main {
         \%option,
         'sre_smart|smart|m',
         'path|p=s@',
+        'file_git|git|g',
         'file_symlinks|links|l!',
         'file_recurse|R!',
         'file_include|include|n=s@',
@@ -182,6 +183,7 @@ This documentation refers to tfind version 0.8.1
       --recurse   Recurse into subdirectories (Default)
       --no-recurse
                   Turns off recursing into subdirectories
+   -g --git       Add .gitignores to files to ignore
    -n --file-include[=]string
                   Only include files mathcing the regex (Multiple)
    -N --int[=]string
