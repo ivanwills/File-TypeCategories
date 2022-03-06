@@ -48,4 +48,5 @@ not_in_file_ok(Changes =>
 
 module_boilerplate_ok('bin/tfind');
 module_boilerplate_ok('lib/File/TypeCategories.pm');
+module_boilerplate_ok('lib/File/TypeCategories/Git.pm');
 done_testing();

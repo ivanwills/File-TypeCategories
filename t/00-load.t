@@ -7,6 +7,7 @@ use Test::Warnings;
 
 BEGIN {
     use_ok( 'File::TypeCategories' );
+    use_ok( 'File::TypeCategories::Git' );
 }
 
 diag( "Testing File::TypeCategories $File::TypeCategories::VERSION, Perl $], $^X" );
