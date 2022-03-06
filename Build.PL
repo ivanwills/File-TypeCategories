@@ -13,6 +13,7 @@ my $builder = Module::Build->new(
         'File::chdir'     => 0,
         'File::ShareDir'  => '1.0',
         'Moo'             => '1.0',
+        'List::Util'      => '1.55',
         'Path::Tiny'      => 0,
         'Type::Tiny'      => '1.0',
         'Types::Standard' => '1.0',
