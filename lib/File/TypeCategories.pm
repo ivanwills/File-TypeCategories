@@ -19,7 +19,7 @@ use File::ShareDir qw/dist_dir/;
 use YAML qw/LoadFile/;
 use File::TypeCategories::Git;
 
-our $VERSION = version->new('0.8.1');
+our $VERSION = version->new('0.8.2');
 our %warned_once;
 
 has ignore => (
@@ -257,7 +257,7 @@ File::TypeCategories - Determine if files match a specific type
 
 =head1 VERSION
 
-This documentation refers to File::TypeCategories version 0.8.1
+This documentation refers to File::TypeCategories version 0.8.2
 
 =head1 SYNOPSIS
 

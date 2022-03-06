@@ -1,5 +1,13 @@
 Revision history for File-TypeCategories
 
+0.8.2   2022-03-06
+        Updating for release of version 0.8.2
+        Adding in new dependency (Ivan Wills)
+        Adding in new F::T::Git for default testing (Ivan Wills)
+        Fixing help, and git helpers (Ivan Wills)
+        Adding to stop word list (Ivan Wills)
+        Adding passing git ignore configs (Ivan Wills)
+
 0.8.1   2022-01-01
         Updating for release of version 0.8.1
         Updating travis versions (Ivan Wills)
